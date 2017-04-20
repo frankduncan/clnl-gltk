@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if ! [ -n "$1" ] ; then
+  echo "Need a test name"
+  exit 1
+fi
+TEST=$@
+
+sbcl \
+  --noinform --disable-ldb --lose-on-corruption --end-runtime-options \
+  --eval "(asdf:initialize-source-registry \`(:source-registry (:tree ,(car (directory \"src\"))) :INHERIT-CONFIGURATION))" \
+  --eval "(asdf:load-system :clnl-gltk-test)" --eval "(quit)"
+
+sbcl \
+  --noinform --disable-ldb --lose-on-corruption --end-runtime-options \
+  --eval "(asdf:initialize-source-registry \`(:source-registry (:tree ,(car (directory \"src\"))) :INHERIT-CONFIGURATION))" \
+  --eval "(asdf:load-system :clnl-gltk-test)" \
+  --eval "(clnl-gltk-test::test-run \"$TEST\")" \
+  --eval "(quit)"

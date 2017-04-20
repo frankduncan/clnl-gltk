@@ -36,6 +36,7 @@
     *tests*)))
 
 (defun test-debug (name) (format t "----~%~A~%" (funcall (third (find-test name)))))
+(defun test-run (name) (funcall (fourth (find-test name))))
 
 (defun checksum= (expected got)
  (if (stringp expected)
@@ -74,7 +75,8 @@
   (gl:ortho 0 100 0 100 -100 100)
   (gl:matrix-mode :modelview)
   (gl:with-pushed-matrix
-   (funcall *commands*))
+   (funcall *commands*)
+   (gl:matrix-mode :modelview))
   (gl:matrix-mode :projection)))
 
 (defun setup ()
@@ -156,6 +158,3 @@
  ; want to investigate until simply ignoring them becomes a problem.
  (sb-int:with-float-traps-masked (:invalid :inexact :divide-by-zero :overflow :underflow)
   (cl-glut:main-loop)))
-
-(defun run-test (test-name)
- (funcall (fourth (find-test test-name))))
