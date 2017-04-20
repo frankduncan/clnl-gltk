@@ -1,5 +1,5 @@
 (defpackage #:clnl-gltk (:use :cl)
- (:export)
+ (:export #:setup #:font-print)
  (:documentation "Main clnl-gltk package.
 
 Use widgets available in clnl-gltk to create NetLogo user interface widgets in

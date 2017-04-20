@@ -4,5 +4,5 @@
  :maintainer "Frank Duncan (frank@kank.com)"
  :author "Frank Duncan (frank@kank.com)"
  :serial t
- :components ((:file "package"))
+ :components ((:file "package") (:file "font") (:file "base"))
  :depends-on (#-travis :cl-opengl)) ; Don't load libraries in travis

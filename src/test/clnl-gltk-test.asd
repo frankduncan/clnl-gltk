@@ -3,5 +3,5 @@
  :maintainer "Frank Duncan (frank@kank.com)"
  :author "Frank Duncan (frank@kank.com)"
  :serial t
- :components ((:file "package") (:file "main"))
- :depends-on (:clnl-gltk #-travis :cl-glu #-travis :cl-glut))
+ :components ((:file "package") (:file "main") (:file "tests"))
+ :depends-on (:clnl-gltk #-travis :cl-glu #-travis :cl-glut #-travis :ironclad))

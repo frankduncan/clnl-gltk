@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if ! [ -n "$1" ] ; then
+  echo "Need a test name"
+  exit 1
+fi
+TEST=$@
+
+sbcl \
+  --noinform --disable-ldb --lose-on-corruption --end-runtime-options \
+  --eval "(asdf:initialize-source-registry \`(:source-registry (:tree ,(car (directory \"src\"))) :INHERIT-CONFIGURATION))" \
+  --eval "(asdf:load-system :clnl-gltk-test)" --eval "(quit)"
+
+runtestfn() {
+  sbcl \
+    --noinform --disable-ldb --lose-on-corruption --end-runtime-options \
+    --eval "(asdf:initialize-source-registry \`(:source-registry (:tree ,(car (directory \"src\"))) :INHERIT-CONFIGURATION))" \
+    --eval "(asdf:load-system :clnl-gltk-test)" \
+    --eval "(clnl-gltk-test::test-debug \"$TEST\")" \
+    --eval "(quit)" 2> /dev/null | sed -n '/^----$/,$p' | tail -n +2
+}
+
+checksum=$(runtestfn)
+
+echo "The checksum $checksum is for the file about to be displayed.  Make sure it makes sense!"
+
+display cl.ppm
+rm cl.ppm
