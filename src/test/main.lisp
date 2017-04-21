@@ -3,6 +3,7 @@
 (defvar *tests* nil)
 (defvar *glut-window-opened* nil)
 (defvar *commands* nil)
+(defvar *inputbox* nil) ; this can be more generalized later when there's multiple keyboard input widgets
 
 (defun find-test (name)
  (or
@@ -86,13 +87,20 @@
    (cl-glut:init-window-size 100 100)
    (cl-glut:init-display-mode :double :rgba)
    (cl-glut:create-window "CLNL-GLTK Test Window")
-   (gl:clear-color 0 0 0 1)
+   (gl:clear-depth 1.0f0)
+   (gl:depth-func :lequal)
+   (gl:blend-func :src-alpha :one-minus-src-alpha)
+   (gl:shade-model :smooth)
+   (gl:clear-color 0 0 0 0)
    (cl-glut:display-func (cffi:get-callback 'display))
    (cl-glut:reshape-func (cffi:callback reshape))
    (cl-glut:idle-func (cffi:get-callback 'idle))
    (cl-glut:close-func (cffi:get-callback 'close-func))
+   (cl-glut:keyboard-func (cffi:get-callback 'key-pressed))
+   (cl-glut:special-func (cffi:get-callback 'special-key-pressed))
    (clnl-gltk:setup)
-   (setf *glut-window-opened* t))))
+   (setf *glut-window-opened* t))
+  (setf *inputbox* nil)))
 
 (defun checksum-view ()
  (format nil "~{~2,'0X~}"
@@ -140,6 +148,10 @@
  (when (and (/= 0 width) (/= 0 height))
   (gl:viewport 0 0 width height)))
 
+(defun key-pressed (key x y)
+ (declare (ignore x y))
+ (clnl-gltk:key-pressed *inputbox* key))
+
 (defun idle ()
  (cl-glut:post-redisplay))
 
@@ -148,6 +160,8 @@
  (cl-glut:swap-buffers))
 
 (cffi:defcallback display :void () (display))
+(cffi:defcallback key-pressed :void ((key :uchar) (x :int) (y :int)) (key-pressed key x y))
+(cffi:defcallback special-key-pressed :void ((key glut:special-keys) (x :int) (y :int)) (key-pressed key x y))
 (cffi:defcallback idle :void () (idle))
 (cffi:defcallback close-func :void () (close-func))
 (cffi:defcallback reshape :void ((width :int) (height :int)) (reshape width height))

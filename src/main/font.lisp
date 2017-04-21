@@ -6,7 +6,21 @@
 (defvar *font-data*
  (with-open-file
   (str "resources/font.dat" :element-type 'unsigned-byte)
-  (let ((seq (make-sequence 'vector (file-length str)))) (read-sequence seq str) seq)))
+  (let
+   ((seq (make-sequence 'vector (/ (* 4 (file-length str)) 3))))
+   (loop
+    :for idx :from 0
+    :for r := (read-byte str nil)
+    :for g := (read-byte str nil)
+    :for b := (read-byte str nil)
+    :while r
+    :do
+    (progn
+     (setf (aref seq (* idx 4)) r)
+     (setf (aref seq (+ (* idx 4) 1)) r)
+     (setf (aref seq (+ (* idx 4) 2)) r)
+     (setf (aref seq (+ (* idx 4) 3)) r)))
+   seq)))
 
 (defvar *font-width* 7)
 (defvar *font-height* 14)
@@ -32,13 +46,9 @@ EXAMPLES:
 
   (font-print #P\"Hello World\" t) => nil"
  (gl:enable :texture-2d)
- (gl:disable :blend)
  (gl:bind-texture :texture-2d *texture*)
- (gl:disable :depth-test)
  (gl:list-base *base*)
  (gl:call-lists (map 'vector (lambda (c) (- (char-code c) 32)) str))
- (gl:enable :depth-test)
- (gl:enable :blend)
  (gl:disable :texture-2d))
 
 (defun setup-font ()
@@ -46,7 +56,7 @@ EXAMPLES:
  (gl:bind-texture :texture-2d *texture*)
  (gl:tex-parameter :texture-2d :texture-mag-filter :linear)
  (gl:tex-parameter :texture-2d :texture-min-filter :linear)
- (gl:tex-image-2d :texture-2d 0 :rgb (* *font-width* 224) *font-height* 0 :rgb :unsigned-byte *font-data*)
+ (gl:tex-image-2d :texture-2d 0 :rgba8 (* *font-width* 224) *font-height* 0 :rgba :unsigned-byte *font-data*)
  (setf *base* (gl:gen-lists 224))
  (dotimes (l 224)
   (gl:with-new-list ((+ *base* l) :compile)

@@ -2,6 +2,19 @@
 
 (defstruct textbox x y width height text)
 
+(setf (documentation 'textbox-text 'function)
+ "FUNCTION TEXTBOX-TEXT TB => TEXT
+
+ARGUMENTS AND VALUES:
+
+  TB: a textbox
+  TEXT: string currently being displayed
+
+DESCRIPTION:
+
+  TEXTBOX-TEXT allows for the retrieving and setting of the internal text
+  of textbox TB.")
+
 (defun textbox (x y width height &optional text)
  "FUNCTION TEXTBOX X Y WIDTH HEIGHT &optional TEXT => TB
 
@@ -11,8 +24,8 @@ ARGUMENTS AND VALUES:
   Y: y offset, in pixels
   WIDTH: width, in characters
   HEIGHT: height, in characters
-  TEXT: Optional string for the textual display
-  TB: A textbox that can later be rendered
+  TEXT: optional string for the textual display
+  TB: a textbox that can later be rendered
 
 DESCRIPTION:
 

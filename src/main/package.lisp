@@ -2,7 +2,8 @@
  (:export
   #:render
   #:font-print
-  #:textbox
+  #:textbox #:textbox-text
+  #:inputbox #:key-pressed #:value #:clear
   #:setup)
  (:documentation "Main clnl-gltk package.
 
