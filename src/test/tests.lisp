@@ -79,3 +79,14 @@
   (setf *inputbox* ib)
   (clnl-gltk:render tb)
   (clnl-gltk:render ib)))
+
+(let
+ ((ib (clnl-gltk:inputbox 5 5 1))
+  (tb (clnl-gltk:textbox 5 28 1 1)))
+ (clnl-gltk:resize ib (truncate (- 100 12) clnl-gltk:*font-width*) 1)
+ (clnl-gltk:resize tb (truncate (- 100 12) clnl-gltk:*font-width*) (truncate (- 100 40) clnl-gltk:*font-height*))
+ (deftest "Resize Input Box / Text Box"
+  "14DFCF6AA7954142C5B37DB6DB70EE1426891A8F"
+  (setf *inputbox* ib)
+  (clnl-gltk:render tb)
+  (clnl-gltk:render ib)))

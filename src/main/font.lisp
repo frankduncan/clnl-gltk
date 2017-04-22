@@ -4,26 +4,71 @@
 (defvar *base*)
 
 (defvar *font-data*
- (with-open-file
-  (str "resources/font.dat" :element-type 'unsigned-byte)
-  (let
-   ((seq (make-sequence 'vector (/ (* 4 (file-length str)) 3))))
-   (loop
-    :for idx :from 0
-    :for r := (read-byte str nil)
-    :for g := (read-byte str nil)
-    :for b := (read-byte str nil)
-    :while r
-    :do
-    (progn
-     (setf (aref seq (* idx 4)) r)
-     (setf (aref seq (+ (* idx 4) 1)) r)
-     (setf (aref seq (+ (* idx 4) 2)) r)
-     (setf (aref seq (+ (* idx 4) 3)) r)))
-   seq)))
+ (let*
+  ; This is a small hack for resource loading.  It will do until number of resources grows
+  ; to greater than 1.
+  ((font-locs
+    (list
+     "resources/font.dat"
+     (asdf:system-relative-pathname 'clnl-gltk "resources/font.dat")
+     (asdf:system-relative-pathname 'clnl-gltk "../../resources/font.dat")))
+   (font-loc
+    (or
+     (find-if (lambda (loc) (probe-file loc)) font-locs)
+     (error "Couldn't find font location!"))))
+  (with-open-file
+   (str font-loc :element-type 'unsigned-byte)
+   (let
+    ((seq (make-sequence 'vector (/ (* 4 (file-length str)) 3))))
+    (loop
+     :for idx :from 0
+     :for r := (read-byte str nil)
+     :for g := (read-byte str nil)
+     :for b := (read-byte str nil)
+     :while r
+     :do
+     (progn
+      (setf (aref seq (* idx 4)) r)
+      (setf (aref seq (+ (* idx 4) 1)) r)
+      (setf (aref seq (+ (* idx 4) 2)) r)
+      (setf (aref seq (+ (* idx 4) 3)) r)))
+    seq))))
 
-(defvar *font-width* 7)
-(defvar *font-height* 14)
+(defvar *font-width* 7
+ "*FONT-WIDTH*
+
+VALUE TYPE:
+
+  an integer
+
+INITIAL VALUE:
+
+  7.
+
+DESCRIPTION:
+
+  The width of the font used by CLNL-GLTK.
+
+  This can be used to calculate appropriate sizes of things
+  that may have fonts displayed in them.")
+
+(defvar *font-height* 14
+ "*FONT-HEIGHT*
+
+VALUE TYPE:
+
+  an integer
+
+INITIAL VALUE:
+
+  14
+
+DESCRIPTION:
+
+  The height of the font used by CLNL-GLTK.
+
+  This can be used to calculate appropriate sizes of things
+  that may have fonts displayed in them.")
 
 (defun font-print (str)
  "FONT-PRINT STR => RESULT

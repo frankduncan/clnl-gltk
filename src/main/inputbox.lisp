@@ -24,6 +24,10 @@ DESCRIPTION:
   way, it will never clip a portion of a character off."
  (make-inputbox :x x :y y :width width :text "" :first-drawn-char 0 :cursor 0))
 
+(defmethod resize ((ib inputbox) width height)
+ (declare (ignore y))
+ (setf (inputbox-width ib) width))
+
 (defmethod render ((ib inputbox))
  (gl:color 1f0 1f0 1f0)
  (with-slots (x y width first-drawn-char cursor text) ib
@@ -153,5 +157,4 @@ DESCRIPTION:
   ((equal key 8) (delete-char ib))
   ((equal key 21) (empty ib))
   ((equal key :key-left) (left ib))
-  ((equal key :key-right) (right ib))
-  (t (format t "Unknown Char: ~A~%" key))))
+  ((equal key :key-right) (right ib))))

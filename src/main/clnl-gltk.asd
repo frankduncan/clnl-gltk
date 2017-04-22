@@ -1,6 +1,6 @@
 (asdf:defsystem clnl-gltk
  :name "OpenGL Window Toolkit for CLNL"
- :version "0.0"
+ :version "0.1"
  :maintainer "Frank Duncan (frank@kank.com)"
  :author "Frank Duncan (frank@kank.com)"
  :serial t

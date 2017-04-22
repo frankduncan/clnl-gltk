@@ -6,7 +6,9 @@ echo -n "Building version $version, hit enter to continue"
 read
 
 mkdir clnl-gltk_$version
+mkdir clnl-gltk_$version/resources
 cp -ap src/main/* clnl-gltk_$version/
+cp -ap resources/font.dat clnl-gltk_$version/resources/
 tar zcf clnl-gltk_${version}.tar.gz clnl-gltk_$version/
 rm -rf clnl-gltk_$version
 

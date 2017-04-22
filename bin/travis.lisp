@@ -4,6 +4,7 @@
 (asdf:load-system :clnl-gltk)
 (asdf:load-system :clnl-gltk-test)
 #-travis (asdf:load-system :style-checker)
+#-travis (asdf:load-system :docgen)
 
 (format t "~%~c[1;33mRunning Tests~c[0m~%" #\Esc #\Esc)
 (when (not (clnl-gltk-test:run-all-tests))

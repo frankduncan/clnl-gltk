@@ -38,6 +38,10 @@ DESCRIPTION:
   Multiline strings are supported, and each one appears on a new line."
  (make-textbox :x x :y y :width width :height height :text text))
 
+(defmethod resize ((tb textbox) width height)
+ (setf (textbox-width tb) width)
+ (setf (textbox-height tb) height))
+
 (defmethod render ((tb textbox))
  (gl:color 1f0 1f0 1f0)
  (with-slots (x y width height text) tb
