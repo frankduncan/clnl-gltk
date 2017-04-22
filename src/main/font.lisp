@@ -9,7 +9,7 @@
   (let ((seq (make-sequence 'vector (file-length str)))) (read-sequence seq str) seq)))
 
 (defvar *font-width* 7)
-(defvar *font-height* 15)
+(defvar *font-height* 14)
 
 (defun font-print (str)
  "FONT-PRINT STR => RESULT
@@ -46,7 +46,7 @@ EXAMPLES:
  (gl:bind-texture :texture-2d *texture*)
  (gl:tex-parameter :texture-2d :texture-mag-filter :linear)
  (gl:tex-parameter :texture-2d :texture-min-filter :linear)
- (gl:tex-image-2d :texture-2d 0 :rgb (* 7 224) 15 0 :rgb :unsigned-byte *font-data*)
+ (gl:tex-image-2d :texture-2d 0 :rgb (* *font-width* 224) *font-height* 0 :rgb :unsigned-byte *font-data*)
  (setf *base* (gl:gen-lists 224))
  (dotimes (l 224)
   (gl:with-new-list ((+ *base* l) :compile)
