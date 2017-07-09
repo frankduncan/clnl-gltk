@@ -1,9 +1,10 @@
 (defpackage #:clnl-gltk (:use :cl)
  (:export
-  #:render #:resize
+  #:render #:resize #:mousemove #:mousedown #:mouseup
   #:font-print *font-width* *font-height*
   #:textbox #:textbox-text
   #:inputbox #:key-pressed #:value #:clear
+  #:button
   #:setup)
  (:documentation "Main clnl-gltk package.
 

@@ -90,3 +90,97 @@
   (setf *inputbox* ib)
   (clnl-gltk:render tb)
   (clnl-gltk:render ib)))
+
+(defvar *button-base-sum* "246FF03A0BF9C0ADEBBE6D399450DF4B09951E00")
+(defvar *button-hover-sum* "CBAAA3334D3529AF002764EC4043DB39B0DA42C2")
+
+(let
+ ((but (clnl-gltk:button 5 5 40 30 "test" (lambda () (format t "This button was pressed~%")))))
+ (deftest "Button 1"
+  *button-base-sum*
+  (setf *mouse-reactor* but)
+  (clnl-gltk:render but)))
+
+(let
+ ((but (clnl-gltk:button 5 5 40 30 "te" (lambda () (format t "This button was pressed~%")))))
+ (deftest "Button 2"
+  "77E9810A560991D0420F7E9AACBF7661C71CDBFB"
+  (setf *mouse-reactor* but)
+  (clnl-gltk:render but)))
+
+(let
+ ((checksum "E0F7EE964C574B5A9360A154C7C1FD2F64E9FFD7"))
+ (let
+  ((but (clnl-gltk:button 5 5 40 30 "te..." (lambda () (format t "This button was pressed~%")))))
+  (deftest "Button 3a"
+   checksum
+   (setf *mouse-reactor* but)
+   (clnl-gltk:render but)))
+
+ (let
+  ((but (clnl-gltk:button 5 5 40 30 "testing" (lambda () (format t "This button was pressed~%")))))
+  (deftest "Button 3b"
+   checksum
+   (setf *mouse-reactor* but)
+   (clnl-gltk:render but))))
+
+(let
+ ((but (clnl-gltk:button 5 5 40 30 "test" nil)))
+ (clnl-gltk:mousemove 10 10 but)
+ (deftest "Button Hover 1"
+  *button-hover-sum*
+  (setf *mouse-reactor* but)
+  (clnl-gltk:render but)))
+
+(let
+ ((but (clnl-gltk:button 5 5 40 30 "test" nil)))
+ (clnl-gltk:mousemove 10 10 but)
+ (clnl-gltk:mousemove 50 50 but)
+ (deftest "Button Hover 2"
+  *button-base-sum*
+  (setf *mouse-reactor* but)
+  (clnl-gltk:render but)))
+
+(let
+ ((but (clnl-gltk:button 5 5 40 30 "test" nil)))
+ (clnl-gltk:mousemove 10 10 but)
+ (clnl-gltk:mousedown 10 10 but)
+ (deftest "Button Down"
+  "006E9FE5F641E446EB322FC5977FA3643D80A67E"
+  (setf *mouse-reactor* but)
+  (clnl-gltk:render but)))
+
+(let
+ ((but (clnl-gltk:button 5 5 40 30 "test" nil)))
+ (clnl-gltk:mousemove 10 10 but)
+ (clnl-gltk:mousedown 10 10 but)
+ (clnl-gltk:mousemove 50 50 but)
+ (deftest "Button Down Moved"
+  "EB826464B9A6A1CB4554FA083F87D7D8EC1A071A"
+  (setf *mouse-reactor* but)
+  (clnl-gltk:render but)))
+
+(let*
+ ((clicked nil)
+  (but (clnl-gltk:button 5 5 40 30 "test" (lambda () (setf clicked t)))))
+ (clnl-gltk:mousemove 10 10 but)
+ (clnl-gltk:mousedown 10 10 but)
+ (clnl-gltk:mouseup 10 10 but)
+ (deftest "Button Clicked"
+  *button-hover-sum*
+  (setf *mouse-reactor* but)
+  (clnl-gltk:render but)
+  (when (not clicked) (fail-test))))
+
+(let*
+ ((clicked nil)
+  (but (clnl-gltk:button 5 5 40 30 "test" (lambda () (setf clicked t)))))
+ (clnl-gltk:mousemove 10 10 but)
+ (clnl-gltk:mousedown 10 10 but)
+ (clnl-gltk:mousemove 50 50 but)
+ (clnl-gltk:mouseup 50 50 but)
+ (deftest "Button Clicked Abort"
+  *button-base-sum*
+  (setf *mouse-reactor* but)
+  (clnl-gltk:render but)
+  (when clicked (fail-test))))

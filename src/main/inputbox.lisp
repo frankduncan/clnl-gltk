@@ -3,7 +3,7 @@
 (defstruct inputbox x y width first-drawn-char cursor text)
 
 (defun inputbox (x y width)
- "FUNCTION INPUTBOX X Y WIDTH => IB
+ "INPUTBOX X Y WIDTH => IB
 
 ARGUMENTS AND VALUES:
 

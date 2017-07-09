@@ -1,9 +1,15 @@
 (in-package #:clnl-gltk-test)
 
 (defvar *tests* nil)
+(defvar *test-success* nil)
 (defvar *glut-window-opened* nil)
 (defvar *commands* nil)
 (defvar *inputbox* nil) ; this can be more generalized later when there's multiple keyboard input widgets
+(defvar *mouse-reactor* nil) ; like similar, but at least a little more generalized
+
+(defvar *height* 100) ; window height
+
+(defun fail-test () (setf *test-success* nil))
 
 (defun find-test (name)
  (or
@@ -49,13 +55,15 @@
    (list
     ,name
     (lambda ()
-     (setup)
-     (setf *commands* (lambda () ,@commands))
      (let
-      ((result-sum (checksum-view)))
-      (when (not (checksum= ,sum result-sum))
-       (format t "~c[1;35m-- For ~A, got ~A but expected ~A~c[0m~%" #\Esc ,name result-sum ,sum #\Esc))
-      (checksum= ,sum result-sum)))
+      ((*test-success* t))
+      (setup)
+      (setf *commands* (lambda () ,@commands))
+      (let
+       ((result-sum (checksum-view)))
+       (when (not (checksum= ,sum result-sum))
+        (format t "~c[1;35m-- For ~A, got ~A but expected ~A~c[0m~%" #\Esc ,name result-sum ,sum #\Esc))
+       (and *test-success* (checksum= ,sum result-sum)))))
     (lambda ()
      (setup)
      (setf *commands* (lambda () ,@commands))
@@ -97,6 +105,9 @@
    (cl-glut:idle-func (cffi:get-callback 'idle))
    (cl-glut:close-func (cffi:get-callback 'close-func))
    (cl-glut:keyboard-func (cffi:get-callback 'key-pressed))
+   (cl-glut:motion-func (cffi:get-callback 'motion)) ; while mouse is down
+   (cl-glut:passive-motion-func (cffi:get-callback 'motion)) ; while mouse is up
+   (cl-glut:mouse-func (cffi:get-callback 'mouse)) ; state is up/down, button is button 
    (cl-glut:special-func (cffi:get-callback 'special-key-pressed))
    (clnl-gltk:setup)
    (setf *glut-window-opened* t))
@@ -109,48 +120,57 @@
 
 (defun save-view-to-ppm ()
  (let
-  ((height 100) (width 100)) ; hardcoded in interface, hardcoded here, cry for me
+  ((width 100)) ; hardcoded in interface, hardcoded here, cry for me
   (with-open-file (str "cl.ppm"
                    :direction :output
                    :if-exists :supersede
                    :if-does-not-exist :create
                    :element-type '(unsigned-byte 8))
    (write-sequence (map 'vector #'char-code (format nil "P6~%")) str)
-   (write-sequence (map 'vector #'char-code (format nil "~A ~A~%" width height)) str)
+   (write-sequence (map 'vector #'char-code (format nil "~A ~A~%" width *height*)) str)
    (write-sequence (map 'vector #'char-code (format nil "255~%")) str)
    (let
     ((image-data (export-view)))
     (dotimes (i width)
-     (dotimes (j height)
-      (write-byte (aref image-data (+ 0 (* 4 (+ (* (- (1- height) i) width) j)))) str)
-      (write-byte (aref image-data (+ 1 (* 4 (+ (* (- (1- height) i) width) j)))) str)
-      (write-byte (aref image-data (+ 2 (* 4 (+ (* (- (1- height) i) width) j)))) str)))))))
+     (dotimes (j *height*)
+      (write-byte (aref image-data (+ 0 (* 4 (+ (* (- (1- *height*) i) width) j)))) str)
+      (write-byte (aref image-data (+ 1 (* 4 (+ (* (- (1- *height*) i) width) j)))) str)
+      (write-byte (aref image-data (+ 2 (* 4 (+ (* (- (1- *height*) i) width) j)))) str)))))))
 
 (defun export-view ()
  (sb-int:with-float-traps-masked (:invalid)
   (let
    ((fbo (first (gl:gen-framebuffers 1)))
     (render-buf (first (gl:gen-renderbuffers 1)))
-    (width 100)  ; Hard coded for now, yay v1 (if you see this comment in a year, please cry for me)
-    (height 100))
+    (width 100))  ; Hard coded for now, yay v1 (if you see this comment in a year, please cry for me)
    (gl:bind-framebuffer :framebuffer fbo)
    (gl:bind-renderbuffer :renderbuffer render-buf)
-   (gl:renderbuffer-storage :renderbuffer :rgba8 width height)
+   (gl:renderbuffer-storage :renderbuffer :rgba8 width *height*)
    (gl:framebuffer-renderbuffer :draw-framebuffer :color-attachment0 :renderbuffer render-buf)
-   (gl:viewport 0 0 width height)
+   (gl:viewport 0 0 width *height*)
    (render-scene)
-   (gl:read-pixels 0 0 width height :rgba :unsigned-byte))))
+   (gl:read-pixels 0 0 width *height* :rgba :unsigned-byte))))
 
 (defun close-func ()
  (sb-ext:exit :abort t))
 
 (defun reshape (width height)
  (when (and (/= 0 width) (/= 0 height))
-  (gl:viewport 0 0 width height)))
+  (setf *height* height)
+  (gl:viewport 0 0 width *height*)))
 
 (defun key-pressed (key x y)
  (declare (ignore x y))
- (clnl-gltk:key-pressed *inputbox* key))
+ (when (eql 27 key) (close-func))
+ (when *inputbox* (clnl-gltk:key-pressed *inputbox* key)))
+
+(defun mouse (button state x y)
+ (declare (ignore button))
+ (when (eql state :down) (clnl-gltk:mousedown x (- *height* y) *mouse-reactor*))
+ (when (eql state :up) (clnl-gltk:mouseup x (- *height* y) *mouse-reactor*)))
+
+(defun motion (x y)
+ (clnl-gltk:mousemove x (- *height* y) *mouse-reactor*))
 
 (defun idle ()
  (cl-glut:post-redisplay))
@@ -161,6 +181,10 @@
 
 (cffi:defcallback display :void () (display))
 (cffi:defcallback key-pressed :void ((key :uchar) (x :int) (y :int)) (key-pressed key x y))
+(cffi:defcallback mouse :void ((button cl-glut:mouse-button) (state cl-glut:mouse-button-state) (x :int) (y :int))
+ (mouse button state x y))
+
+(cffi:defcallback motion :void ((x :int) (y :int)) (motion x y))
 (cffi:defcallback special-key-pressed :void ((key glut:special-keys) (x :int) (y :int)) (key-pressed key x y))
 (cffi:defcallback idle :void () (idle))
 (cffi:defcallback close-func :void () (close-func))

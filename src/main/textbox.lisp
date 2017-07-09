@@ -3,7 +3,7 @@
 (defstruct textbox x y width height text)
 
 (setf (documentation 'textbox-text 'function)
- "FUNCTION TEXTBOX-TEXT TB => TEXT
+ "TEXTBOX-TEXT TB => TEXT
 
 ARGUMENTS AND VALUES:
 
@@ -16,7 +16,7 @@ DESCRIPTION:
   of textbox TB.")
 
 (defun textbox (x y width height &optional text)
- "FUNCTION TEXTBOX X Y WIDTH HEIGHT &optional TEXT => TB
+ "TEXTBOX X Y WIDTH HEIGHT &optional TEXT => TB
 
 ARGUMENTS AND VALUES:
 
@@ -50,17 +50,7 @@ DESCRIPTION:
     ((px-width (+ (* width *font-width*) 6))
      (px-height (+ (* height *font-height*) 6)))
     (gl:translate x y 0)
-    (gl:line-width 1f0)
-    (gl:begin :lines)
-    (gl:vertex 0 0)
-    (gl:vertex px-width 0)
-    (gl:vertex px-width 0)
-    (gl:vertex px-width px-height)
-    (gl:vertex px-width px-height)
-    (gl:vertex 0 px-height)
-    (gl:vertex 0 px-height)
-    (gl:vertex 0 0)
-    (gl:end)
+    (draw-border 0 0 px-width px-height)
     (gl:translate 2 (- px-height 4 *font-height*) 0)
     (when text
      (let
