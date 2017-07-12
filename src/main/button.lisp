@@ -77,12 +77,20 @@ DESCRIPTION:
      0)
     (font-print text)))))
 
-(defmethod mousemove (m-x m-y (but button))
+(defmethod reposition ((but button) x y)
+ (setf (button-x but) x)
+ (setf (button-y but) y))
+
+(defmethod resize ((but button) width height)
+ (setf (button-width but) width)
+ (setf (button-height but) height))
+
+(defmethod mousemove ((but button) m-x m-y)
  (setf (button-hover but) (in-button m-x m-y but)))
 
-(defmethod mousedown (m-x m-y (but button))
+(defmethod mousedown ((but button) m-x m-y)
  (setf (button-click but) (in-button m-x m-y but)))
 
-(defmethod mouseup (m-x m-y (but button))
+(defmethod mouseup ((but button) m-x m-y)
  (when (and (button-hover but) (button-click but) (button-callback but)) (funcall (button-callback but)))
  (setf (button-click but) nil))

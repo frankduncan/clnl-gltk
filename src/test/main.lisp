@@ -105,9 +105,9 @@
    (cl-glut:idle-func (cffi:get-callback 'idle))
    (cl-glut:close-func (cffi:get-callback 'close-func))
    (cl-glut:keyboard-func (cffi:get-callback 'key-pressed))
-   (cl-glut:motion-func (cffi:get-callback 'motion)) ; while mouse is down
-   (cl-glut:passive-motion-func (cffi:get-callback 'motion)) ; while mouse is up
-   (cl-glut:mouse-func (cffi:get-callback 'mouse)) ; state is up/down, button is button 
+   (cl-glut:motion-func (cffi:get-callback 'motion))
+   (cl-glut:passive-motion-func (cffi:get-callback 'motion))
+   (cl-glut:mouse-func (cffi:get-callback 'mouse))
    (cl-glut:special-func (cffi:get-callback 'special-key-pressed))
    (clnl-gltk:setup)
    (setf *glut-window-opened* t))
@@ -166,11 +166,11 @@
 
 (defun mouse (button state x y)
  (declare (ignore button))
- (when (eql state :down) (clnl-gltk:mousedown x (- *height* y) *mouse-reactor*))
- (when (eql state :up) (clnl-gltk:mouseup x (- *height* y) *mouse-reactor*)))
+ (when (eql state :down) (clnl-gltk:mousedown *mouse-reactor* x (- *height* y)))
+ (when (eql state :up) (clnl-gltk:mouseup *mouse-reactor* x (- *height* y))))
 
 (defun motion (x y)
- (clnl-gltk:mousemove x (- *height* y) *mouse-reactor*))
+ (clnl-gltk:mousemove *mouse-reactor* x (- *height* y)))
 
 (defun idle ()
  (cl-glut:post-redisplay))

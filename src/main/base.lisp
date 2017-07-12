@@ -35,15 +35,33 @@ DESCRIPTION:
   WIDTH and HEIGHT are contextual to the actual item being resized, and
   may be even be ignored."))
 
-(defgeneric mousemove (x y item)
+(defgeneric reposition (item x y)
  (:documentation
-  "MOUSEMOVE X Y ITEM => RESULT
+  "REPOSITION ITEM X Y => RESULT
 
 ARGUMENTS AND VALUES:
 
+  ITEM: item to be rendered
   X: an integer
   Y: an integer
+  RESULT: undefined
+
+DESCRIPTION:
+
+  REPOSITION is the general purpose resizing entry point for all widgets.
+
+  X and Y are contextual to the actual item being repositioned, and
+  may be even be ignored."))
+
+(defgeneric mousemove (item x y)
+ (:documentation
+  "MOUSEMOVE ITEM X Y => RESULT
+
+ARGUMENTS AND VALUES:
+
   ITEM: item handling event
+  X: an integer
+  Y: an integer
   RESULT: undefined
 
 DESCRIPTION:
@@ -58,17 +76,17 @@ DESCRIPTION:
   A catchall method that does nothing is also defined so that mouse functions
   can loop over all available widgets and let them decide what they want to do."))
 
-(defmethod mousemove (x y item))
+(defmethod mousemove (item x y))
 
-(defgeneric mousedown (x y item)
+(defgeneric mousedown (item x y)
  (:documentation
-  "MOUSEDOWN X Y ITEM => RESULT
+  "MOUSEDOWN ITEM X Y => RESULT
 
 ARGUMENTS AND VALUES:
 
+  ITEM: item handling event
   X: an integer
   Y: an integer
-  ITEM: item handling event
   RESULT: undefined
 
 DESCRIPTION:
@@ -84,17 +102,17 @@ DESCRIPTION:
   A catchall method that does nothing is also defined so that mouse functions
   can loop over all available widgets and let them decide what they want to do."))
 
-(defmethod mousedown (x y item))
+(defmethod mousedown (item x y))
 
-(defgeneric mouseup (x y item)
+(defgeneric mouseup (item x y)
  (:documentation
-  "MOUSEUP X Y ITEM => RESULT
+  "MOUSEUP ITEM X Y => RESULT
 
 ARGUMENTS AND VALUES:
 
+  ITEM: item handling event
   X: an integer
   Y: an integer
-  ITEM: item handling event
   RESULT: undefined
 
 DESCRIPTION:
@@ -111,7 +129,7 @@ DESCRIPTION:
   A catchall method that does nothing is also defined so that mouse functions
   can loop over all available widgets and let them decide what they want to do."))
 
-(defmethod mouseup (x y item))
+(defmethod mouseup (item x y))
 
 ; Stick utilities here for now
 (defun draw-border (x1 y1 x2 y2 &optional (line-width 1f0))

@@ -126,7 +126,7 @@
 
 (let
  ((but (clnl-gltk:button 5 5 40 30 "test" nil)))
- (clnl-gltk:mousemove 10 10 but)
+ (clnl-gltk:mousemove but 10 10)
  (deftest "Button Hover 1"
   *button-hover-sum*
   (setf *mouse-reactor* but)
@@ -134,8 +134,8 @@
 
 (let
  ((but (clnl-gltk:button 5 5 40 30 "test" nil)))
- (clnl-gltk:mousemove 10 10 but)
- (clnl-gltk:mousemove 50 50 but)
+ (clnl-gltk:mousemove but 10 10)
+ (clnl-gltk:mousemove but 50 50)
  (deftest "Button Hover 2"
   *button-base-sum*
   (setf *mouse-reactor* but)
@@ -143,8 +143,8 @@
 
 (let
  ((but (clnl-gltk:button 5 5 40 30 "test" nil)))
- (clnl-gltk:mousemove 10 10 but)
- (clnl-gltk:mousedown 10 10 but)
+ (clnl-gltk:mousemove but 10 10)
+ (clnl-gltk:mousedown but 10 10)
  (deftest "Button Down"
   "006E9FE5F641E446EB322FC5977FA3643D80A67E"
   (setf *mouse-reactor* but)
@@ -152,9 +152,9 @@
 
 (let
  ((but (clnl-gltk:button 5 5 40 30 "test" nil)))
- (clnl-gltk:mousemove 10 10 but)
- (clnl-gltk:mousedown 10 10 but)
- (clnl-gltk:mousemove 50 50 but)
+ (clnl-gltk:mousemove but 10 10)
+ (clnl-gltk:mousedown but 10 10)
+ (clnl-gltk:mousemove but 50 50)
  (deftest "Button Down Moved"
   "EB826464B9A6A1CB4554FA083F87D7D8EC1A071A"
   (setf *mouse-reactor* but)
@@ -163,9 +163,9 @@
 (let*
  ((clicked nil)
   (but (clnl-gltk:button 5 5 40 30 "test" (lambda () (setf clicked t)))))
- (clnl-gltk:mousemove 10 10 but)
- (clnl-gltk:mousedown 10 10 but)
- (clnl-gltk:mouseup 10 10 but)
+ (clnl-gltk:mousemove but 10 10)
+ (clnl-gltk:mousedown but 10 10)
+ (clnl-gltk:mouseup but 10 10)
  (deftest "Button Clicked"
   *button-hover-sum*
   (setf *mouse-reactor* but)
@@ -175,12 +175,22 @@
 (let*
  ((clicked nil)
   (but (clnl-gltk:button 5 5 40 30 "test" (lambda () (setf clicked t)))))
- (clnl-gltk:mousemove 10 10 but)
- (clnl-gltk:mousedown 10 10 but)
- (clnl-gltk:mousemove 50 50 but)
- (clnl-gltk:mouseup 50 50 but)
+ (clnl-gltk:mousemove but 10 10)
+ (clnl-gltk:mousedown but 10 10)
+ (clnl-gltk:mousemove but 50 50)
+ (clnl-gltk:mouseup but 50 50)
  (deftest "Button Clicked Abort"
   *button-base-sum*
   (setf *mouse-reactor* but)
   (clnl-gltk:render but)
   (when clicked (fail-test))))
+
+(let*
+ ((clicked nil)
+  (but (clnl-gltk:button 20 20 50 40 "test" nil)))
+ (clnl-gltk:resize but 40 30)
+ (clnl-gltk:reposition but 5 5)
+ (deftest "Button Reize/Reposition"
+  *button-base-sum*
+  (setf *mouse-reactor* but)
+  (clnl-gltk:render but)))
