@@ -4,7 +4,7 @@
   #:font-print *font-width* *font-height*
   #:textbox #:textbox-text
   #:inputbox #:key-pressed #:value #:clear
-  #:button
+  #:button #:toggle
   #:setup)
  (:documentation "Main clnl-gltk package.
 

@@ -185,12 +185,70 @@
   (clnl-gltk:render but)
   (when clicked (fail-test))))
 
-(let*
- ((clicked nil)
-  (but (clnl-gltk:button 20 20 50 40 "test" nil)))
+(let
+ ((but (clnl-gltk:button 20 20 50 40 "test" nil)))
  (clnl-gltk:resize but 40 30)
  (clnl-gltk:reposition but 5 5)
  (deftest "Button Reize/Reposition"
   *button-base-sum*
+  (setf *mouse-reactor* but)
+  (clnl-gltk:render but)))
+
+(let*
+ ((but nil))
+ (setf but (clnl-gltk:button 20 20 60 40 "test" (lambda () (clnl-gltk:toggle but)) :forever t))
+ (deftest "Button Forever 1"
+  '("177FDA47EF4BF0A9C17594EE3FCC46810BF95EDE" "7825FBB56097D7F74ECE6D09FD864CB7D9A166F6")
+  (setf *mouse-reactor* but)
+  (clnl-gltk:render but)))
+
+(let*
+ ((but nil))
+ (setf but (clnl-gltk:button 20 20 60 40 "test" (lambda () (clnl-gltk:toggle but)) :forever t))
+ (clnl-gltk:mousemove but 30 30)
+ (clnl-gltk:mousedown but 30 30)
+ (clnl-gltk:mouseup but 30 30)
+ (deftest "Button Forever - Toggle mouse on"
+  '("6838E917A88FECEFE4DF081B072699F30FC869F6" "AA8B2CB66C2B24006F65F800B4782AE6085F5191")
+  (setf *mouse-reactor* but)
+  (clnl-gltk:render but)))
+
+(let*
+ ((but nil))
+ (setf but (clnl-gltk:button 20 20 60 40 "test" (lambda () (clnl-gltk:toggle but)) :forever t))
+ (clnl-gltk:mousemove but 30 30)
+ (clnl-gltk:mousedown but 30 30)
+ (clnl-gltk:mouseup but 30 30)
+ (clnl-gltk:mousemove but 10 10)
+ (deftest "Button Forever - Toggle mouse off"
+  '("3A3B731359CBDADE2818D555B086CBC93EA29017" "1A3588244F03415EBFD74763309A7E9FDA32EFE4")
+  (setf *mouse-reactor* but)
+  (clnl-gltk:render but)))
+
+(let*
+ ((but nil))
+ (setf but (clnl-gltk:button 20 20 60 40 "test" (lambda () (clnl-gltk:toggle but)) :forever t))
+ (clnl-gltk:mousemove but 30 30)
+ (clnl-gltk:mousedown but 30 30)
+ (clnl-gltk:mouseup but 30 30)
+ (clnl-gltk:mousedown but 30 30)
+ (clnl-gltk:mouseup but 30 30)
+ (clnl-gltk:mousemove but 10 10)
+ (deftest "Button Forever - Toggle twice"
+  '("177FDA47EF4BF0A9C17594EE3FCC46810BF95EDE" "7825FBB56097D7F74ECE6D09FD864CB7D9A166F6")
+  (setf *mouse-reactor* but)
+  (clnl-gltk:render but)))
+
+(let*
+ ((but nil))
+ (setf but (clnl-gltk:button 20 20 60 40 "test" (lambda () (clnl-gltk:toggle but t)) :forever t))
+ (clnl-gltk:mousemove but 30 30)
+ (clnl-gltk:mousedown but 30 30)
+ (clnl-gltk:mouseup but 30 30)
+ (clnl-gltk:mousedown but 30 30)
+ (clnl-gltk:mouseup but 30 30)
+ (clnl-gltk:mousemove but 10 10)
+ (deftest "Button Forever - Toggle state T"
+  '("3A3B731359CBDADE2818D555B086CBC93EA29017" "1A3588244F03415EBFD74763309A7E9FDA32EFE4")
   (setf *mouse-reactor* but)
   (clnl-gltk:render but)))
