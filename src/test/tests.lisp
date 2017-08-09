@@ -252,3 +252,55 @@
   '("3A3B731359CBDADE2818D555B086CBC93EA29017" "1A3588244F03415EBFD74763309A7E9FDA32EFE4")
   (setf *mouse-reactor* but)
   (clnl-gltk:render but)))
+
+(defvar *switch-on* '("066088122E0633F6F1C309373BF7E02EA0EDF6B4" "3B8285565BCB400AAF89B180F7C3D4BC6A34761A"))
+(defvar *switch-off* '("1D4029F33A353A9EAA7DB7038AFC5C3CF6640C3D" "47CFEB0F5E5841DAAA4DB5CC543E1E2EFE8E037D"))
+(defvar *switch-hover* '("056E4C64078F6EA45A49E0F342D3B7CD912DE996" "B1C3FC0B3D232674E9DF26B53D3A5A12F22756B2"))
+
+(let
+ ((switch (clnl-gltk:switch 5 5 80 "test" (lambda (state) (format t "The new state is: ~A~%" state)) t)))
+ (deftest "Switch 1"
+  *switch-on*
+  (setf *mouse-reactor* switch)
+  (clnl-gltk:render switch)))
+
+(let
+ ((switch (clnl-gltk:switch 5 5 80 "test" (lambda (state) (format t "The new state is: ~A~%" state)))))
+ (deftest "Switch 2"
+  *switch-off*
+  (setf *mouse-reactor* switch)
+  (clnl-gltk:render switch)))
+
+(let
+ ((switch (clnl-gltk:switch 5 5 80 "testing switch" (lambda (state) (format t "The new state is: ~A~%" state)))))
+ (deftest "Switch 3"
+  '("35332B4D8BD5E26FADFB9CE21466EC6016C26887" "751D71C3B77DE8956325EDC2294FEDB68A12643E")
+  (setf *mouse-reactor* switch)
+  (clnl-gltk:render switch)))
+
+(let
+ ((switch (clnl-gltk:switch 5 5 80 "test" (lambda (state) (format t "The new state is: ~A~%" state)))))
+ (clnl-gltk:mousemove switch 30 30)
+ (deftest "Switch Hover"
+  *switch-hover*
+  (setf *mouse-reactor* switch)
+  (clnl-gltk:render switch)))
+
+(let
+ ((switch (clnl-gltk:switch 5 5 80 "test" (lambda (state) (format t "The new state is: ~A~%" state)))))
+ (clnl-gltk:mousemove switch 30 30)
+ (clnl-gltk:mousemove switch 50 50)
+ (deftest "Switch Hover 2"
+  *switch-off*
+  (setf *mouse-reactor* switch)
+  (clnl-gltk:render switch)))
+
+(let*
+ ((on nil)
+  (switch (clnl-gltk:switch 5 5 80 "test" (lambda (state) (setf on state)))))
+ (clnl-gltk:mousedown switch 30 30)
+ (deftest "Switch Click"
+  *switch-on*
+  (setf *mouse-reactor* switch)
+  (clnl-gltk:render switch)
+  (when (not on) (fail-test))))

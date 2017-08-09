@@ -2,13 +2,6 @@
 
 (defstruct button x y width height text callback hover click forever toggled)
 
-; minimalist button idea
-; - white line border
-; - hover, lighten inside slightly
-; - click/mousedown, faded outside border, one line outside at 80% opacity, one more at 50% opacity
-;   - from amazon
-; - toggled on, inside is 80% white, lettering black
-
 (defun in-button (m-x m-y but)
  (with-slots (x y width height) but
   (and (< x m-x (+ x width)) (< y m-y (+ y height)))))
@@ -133,21 +126,7 @@ DESCRIPTION:
      0)
     (font-print text)))))
 
-(defun toggle (but &optional (state :unused))
- "TOGGLE BUTTON &optional STATE => NEW-STATE
-
-ARGUMENTS AND VALUES:
-
-  BUTTON: a button
-  STATE: a boolean, the state to set to
-  NEW-STATE: a boolean, the state after being set
-
-DESCRIPTION:
-
-  TOGGLE toggleds a BUTTON.
-
-  Inverts the current toggle status of the BUTTON if no STATE
-  passed in, otherwise sets to STATE."
+(defmethod toggle ((but button) &optional (state :unused))
  (setf (button-toggled but) (if (eql state :unused) (not (button-toggled but)) state)))
 
 (defmethod reposition ((but button) x y)

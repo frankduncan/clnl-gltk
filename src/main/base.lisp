@@ -131,6 +131,23 @@ DESCRIPTION:
 
 (defmethod mouseup (item x y))
 
+(defgeneric toggle (item &optional state)
+ (:documentation
+  "TOGGLE ITEM &optional STATE => NEW-STATE
+
+ARGUMENTS AND VALUES:
+
+  ITEM: an item
+  STATE: a boolean, the state to set to
+  NEW-STATE: a boolean, the state after being set
+
+DESCRIPTION:
+
+  TOGGLE toggles an ITEM.
+
+  Inverts the current toggle status of the ITEM if no STATE
+  passed in, otherwise sets to STATE."))
+
 ; Stick utilities here for now
 (defun draw-border (x1 y1 x2 y2 &optional (line-width 1f0))
  (let
