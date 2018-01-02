@@ -7,27 +7,51 @@
  (clnl-gltk:font-print "Hello World"))
 
 (let
- ((tb (clnl-gltk:textbox 5 5 5 1 "Hello")))
+ ((tb (clnl-gltk:textbox 5 5 5 1 :text "Hello")))
  (deftest "Text Box 1"
   '("21A6A03947D811EF70F45DAB3CF86FC3F5155F57" "002B9E00C55CB467C2BA6DB7004AEB3E37EB7DC0")
   (clnl-gltk:render tb)))
 
 (let
- ((tb (clnl-gltk:textbox 5 5 7 2 "Hello")))
+ ((tb (clnl-gltk:textbox 5 5 7 2 :text "Hello")))
  (deftest "Text Box 2"
   '("6CC1E2734C274C193B003A544A7E3A5923F25C5C" "76251F34BA5626AA846C7700B5D78A15C5D3FEE5")
   (clnl-gltk:render tb)))
 
 (let
- ((tb (clnl-gltk:textbox 5 5 5 2 (format nil "Hello~%World"))))
+ ((tb (clnl-gltk:textbox 5 5 5 2 :text (format nil "Hello~%World"))))
  (deftest "Text Box Multiline"
   '("A90B6F28500F34FEA8DB7C766C775EC9DE89B9FD" "AEE3421D70811D6989348374251B2F9E00019B46")
   (clnl-gltk:render tb)))
 
 (let
- ((tb (clnl-gltk:textbox 5 5 5 2 (format nil "Helloare~%Worlding~%fdsa"))))
+ ((tb (clnl-gltk:textbox 5 5 5 2 :text (format nil "Helloare~%Worlding~%fdsa"))))
  (deftest "Text Box Multiline Clip"
   '("A90B6F28500F34FEA8DB7C766C775EC9DE89B9FD" "AEE3421D70811D6989348374251B2F9E00019B46")
+  (clnl-gltk:render tb)))
+
+(let
+ ((tb (clnl-gltk:textbox 5 50 5 2 :text (format nil "Helloare~%Worlding~%fdsa") :border nil)))
+ (deftest "Text Box Borderless"
+  '("8D3B592B51A60A2BBC18564E6CBAF231B0AE19DD" "")
+  (clnl-gltk:render tb)))
+
+(let
+ ((tb (clnl-gltk:textbox 5 5 6 5 :text (format nil "Hi my name is~%frank") :border nil :word-wrap t)))
+ (deftest "Text Box Wrap 1"
+  '("AB467A1E7195B299F2218995A05DD2E13C27DEE9" "")
+  (clnl-gltk:render tb)))
+
+(let
+ ((tb (clnl-gltk:textbox 5 5 3 5 :text (format nil "Hi my name is~%frank") :border nil :word-wrap t)))
+ (deftest "Text Box Wrap 2"
+  '("021D8496E23E955D4315C08540CEBAACFF626E26" "")
+  (clnl-gltk:render tb)))
+
+(let
+ ((tb (clnl-gltk:textbox 5 5 2 5 :text (format nil "Hi m name is~%frank") :border nil :word-wrap t)))
+ (deftest "Text Box Wrap 3"
+  '("5351DCF1D442B6313BD357B1DFB2C80ED3E0E6FB" "")
   (clnl-gltk:render tb)))
 
 (let
