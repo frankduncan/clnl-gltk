@@ -1,7 +1,7 @@
 (in-package #:clnl-gltk-test)
 
 (deftest "Simple Font"
- '("8A20F6ABDEB91C20EDA85C78AED49767AB3A70EB" "80DD444F064D2D60669D072BDE0C6CE25B48E367")
+ "8A20F6ABDEB91C20EDA85C78AED49767AB3A70EB"
  (gl:color 1f0 1f0 1f0)
  (gl:translate 10 10 0)
  (clnl-gltk:font-print "Hello World"))
@@ -9,55 +9,55 @@
 (let
  ((tb (clnl-gltk:textbox 5 5 5 1 :text "Hello")))
  (deftest "Text Box 1"
-  '("21A6A03947D811EF70F45DAB3CF86FC3F5155F57" "002B9E00C55CB467C2BA6DB7004AEB3E37EB7DC0")
+  "21A6A03947D811EF70F45DAB3CF86FC3F5155F57"
   (clnl-gltk:render tb)))
 
 (let
  ((tb (clnl-gltk:textbox 5 5 7 2 :text "Hello")))
  (deftest "Text Box 2"
-  '("6CC1E2734C274C193B003A544A7E3A5923F25C5C" "76251F34BA5626AA846C7700B5D78A15C5D3FEE5")
+  "6CC1E2734C274C193B003A544A7E3A5923F25C5C"
   (clnl-gltk:render tb)))
 
 (let
  ((tb (clnl-gltk:textbox 5 5 5 2 :text (format nil "Hello~%World"))))
  (deftest "Text Box Multiline"
-  '("A90B6F28500F34FEA8DB7C766C775EC9DE89B9FD" "AEE3421D70811D6989348374251B2F9E00019B46")
+  "A90B6F28500F34FEA8DB7C766C775EC9DE89B9FD"
   (clnl-gltk:render tb)))
 
 (let
  ((tb (clnl-gltk:textbox 5 5 5 2 :text (format nil "Helloare~%Worlding~%fdsa"))))
  (deftest "Text Box Multiline Clip"
-  '("A90B6F28500F34FEA8DB7C766C775EC9DE89B9FD" "AEE3421D70811D6989348374251B2F9E00019B46")
+  "A90B6F28500F34FEA8DB7C766C775EC9DE89B9FD"
   (clnl-gltk:render tb)))
 
 (let
  ((tb (clnl-gltk:textbox 5 50 5 2 :text (format nil "Helloare~%Worlding~%fdsa") :border nil)))
  (deftest "Text Box Borderless"
-  '("8D3B592B51A60A2BBC18564E6CBAF231B0AE19DD" "")
+  "8D3B592B51A60A2BBC18564E6CBAF231B0AE19DD"
   (clnl-gltk:render tb)))
 
 (let
  ((tb (clnl-gltk:textbox 5 5 6 5 :text (format nil "Hi my name is~%frank") :border nil :word-wrap t)))
  (deftest "Text Box Wrap 1"
-  '("AB467A1E7195B299F2218995A05DD2E13C27DEE9" "")
+  "AB467A1E7195B299F2218995A05DD2E13C27DEE9"
   (clnl-gltk:render tb)))
 
 (let
  ((tb (clnl-gltk:textbox 5 5 3 5 :text (format nil "Hi my name is~%frank") :border nil :word-wrap t)))
  (deftest "Text Box Wrap 2"
-  '("021D8496E23E955D4315C08540CEBAACFF626E26" "")
+  "021D8496E23E955D4315C08540CEBAACFF626E26"
   (clnl-gltk:render tb)))
 
 (let
  ((tb (clnl-gltk:textbox 5 5 2 5 :text (format nil "Hi m name is~%frank") :border nil :word-wrap t)))
  (deftest "Text Box Wrap 3"
-  '("5351DCF1D442B6313BD357B1DFB2C80ED3E0E6FB" "")
+  "5351DCF1D442B6313BD357B1DFB2C80ED3E0E6FB"
   (clnl-gltk:render tb)))
 
 (let
  ((ib (clnl-gltk:inputbox 5 5 5)))
  (deftest "Input Box 1"
-  '("12C410CF23BC494CB6C61A69452BF9D66E2F535B")
+  "12C410CF23BC494CB6C61A69452BF9D66E2F535B"
   (setf *inputbox* ib)
   (clnl-gltk:render ib)))
 
@@ -71,7 +71,7 @@
  (clnl-gltk:key-pressed ib 8)
  (clnl-gltk:key-pressed ib :key-right)
  (deftest "Input Box 2"
-  '("28ABF4CF2164E810E2068B3FEB8E7AEE356D809D" "FC65485ADF1D8082B3477388E16E407DBA2055D9")
+  "28ABF4CF2164E810E2068B3FEB8E7AEE356D809D"
   (setf *inputbox* ib)
   (clnl-gltk:render ib)))
 
@@ -84,7 +84,7 @@
  (clnl-gltk:key-pressed ib :key-left)
  (clnl-gltk:key-pressed ib 21)
  (deftest "Input Box 3"
-  '("39BBC5FBF12191BA83EB29477D8C96BA6B09790D" "A3B65B6C4AA44881EC8A5CBF38ED1E78FDBBFF00")
+  "39BBC5FBF12191BA83EB29477D8C96BA6B09790D"
   (setf *inputbox* ib)
   (clnl-gltk:render ib)))
 
@@ -99,7 +99,7 @@
  (setf (clnl-gltk:textbox-text tb) (clnl-gltk:value ib))
  (clnl-gltk:clear ib)
  (deftest "Input Box / Text Box"
-  '("FFE0866958A8EAC1B04FCFB1C03BD0CD0250FE9D" "357A70D811786FF4ACAB6EBFA489E6FF32F08BB2")
+  "FFE0866958A8EAC1B04FCFB1C03BD0CD0250FE9D"
   (setf *inputbox* ib)
   (clnl-gltk:render tb)
   (clnl-gltk:render ib)))
@@ -222,7 +222,7 @@
  ((but nil))
  (setf but (clnl-gltk:button 20 20 60 40 "test" (lambda () (clnl-gltk:toggle but)) :forever t))
  (deftest "Button Forever 1"
-  '("177FDA47EF4BF0A9C17594EE3FCC46810BF95EDE" "7825FBB56097D7F74ECE6D09FD864CB7D9A166F6")
+  "177FDA47EF4BF0A9C17594EE3FCC46810BF95EDE"
   (setf *mouse-reactor* but)
   (clnl-gltk:render but)))
 
@@ -233,7 +233,7 @@
  (clnl-gltk:mousedown but 30 30)
  (clnl-gltk:mouseup but 30 30)
  (deftest "Button Forever - Toggle mouse on"
-  '("6838E917A88FECEFE4DF081B072699F30FC869F6" "AA8B2CB66C2B24006F65F800B4782AE6085F5191")
+  "6838E917A88FECEFE4DF081B072699F30FC869F6"
   (setf *mouse-reactor* but)
   (clnl-gltk:render but)))
 
@@ -245,7 +245,7 @@
  (clnl-gltk:mouseup but 30 30)
  (clnl-gltk:mousemove but 10 10)
  (deftest "Button Forever - Toggle mouse off"
-  '("3A3B731359CBDADE2818D555B086CBC93EA29017" "1A3588244F03415EBFD74763309A7E9FDA32EFE4")
+  "3A3B731359CBDADE2818D555B086CBC93EA29017"
   (setf *mouse-reactor* but)
   (clnl-gltk:render but)))
 
@@ -259,7 +259,7 @@
  (clnl-gltk:mouseup but 30 30)
  (clnl-gltk:mousemove but 10 10)
  (deftest "Button Forever - Toggle twice"
-  '("177FDA47EF4BF0A9C17594EE3FCC46810BF95EDE" "7825FBB56097D7F74ECE6D09FD864CB7D9A166F6")
+  "177FDA47EF4BF0A9C17594EE3FCC46810BF95EDE"
   (setf *mouse-reactor* but)
   (clnl-gltk:render but)))
 
@@ -273,13 +273,13 @@
  (clnl-gltk:mouseup but 30 30)
  (clnl-gltk:mousemove but 10 10)
  (deftest "Button Forever - Toggle state T"
-  '("3A3B731359CBDADE2818D555B086CBC93EA29017" "1A3588244F03415EBFD74763309A7E9FDA32EFE4")
+  "3A3B731359CBDADE2818D555B086CBC93EA29017"
   (setf *mouse-reactor* but)
   (clnl-gltk:render but)))
 
-(defvar *switch-on* '("066088122E0633F6F1C309373BF7E02EA0EDF6B4" "3B8285565BCB400AAF89B180F7C3D4BC6A34761A"))
-(defvar *switch-off* '("1D4029F33A353A9EAA7DB7038AFC5C3CF6640C3D" "47CFEB0F5E5841DAAA4DB5CC543E1E2EFE8E037D"))
-(defvar *switch-hover* '("056E4C64078F6EA45A49E0F342D3B7CD912DE996" "B1C3FC0B3D232674E9DF26B53D3A5A12F22756B2"))
+(defvar *switch-on* "066088122E0633F6F1C309373BF7E02EA0EDF6B4")
+(defvar *switch-off* "1D4029F33A353A9EAA7DB7038AFC5C3CF6640C3D")
+(defvar *switch-hover* "056E4C64078F6EA45A49E0F342D3B7CD912DE996")
 
 (let
  ((switch (clnl-gltk:switch 5 5 80 "test" (lambda (state) (format t "The new state is: ~A~%" state)) t)))
@@ -298,7 +298,7 @@
 (let
  ((switch (clnl-gltk:switch 5 5 80 "testing switch" (lambda (state) (format t "The new state is: ~A~%" state)))))
  (deftest "Switch 3"
-  '("35332B4D8BD5E26FADFB9CE21466EC6016C26887" "751D71C3B77DE8956325EDC2294FEDB68A12643E")
+  "35332B4D8BD5E26FADFB9CE21466EC6016C26887"
   (setf *mouse-reactor* switch)
   (clnl-gltk:render switch)))
 
